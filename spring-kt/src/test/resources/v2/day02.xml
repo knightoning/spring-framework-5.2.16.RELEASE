@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="dog" class="com.kt.cn.v2.day01.Dog">
+		<!-- 指定构造器参数 index对应构造器中参数位置-->
+		<!-- 也可以通过指定参数类型，指定参数名称来注入属性-->
+		<constructor-arg index="0" value="小明"/>
+		<constructor-arg index="1" value="3"/>
+	</bean>
+
+	<!--  ===============beanPostProcesssor配置begin=========== -->
+	<bean id="myBeanPostProcessorOne" class="com.kt.cn.v2.day01.processor.bean.MyBeanPostProcessorOne"/>
+	<bean id="myBeanPostProcessorTwo" class="com.kt.cn.v2.day01.processor.bean.MyBeanPostProcessorTwo"/>
+	<!--  ===============beanPostProcesssor配置end=========== -->
+
+<!--	&lt;!&ndash; =================beanFactoryPostProcessor配置begin=======&ndash;&gt;-->
+<!--	&lt;!&ndash; 注册第一个后置工厂处理器&ndash;&gt;-->
+<!--	<bean id="myBeanFactoryPostProcessorOne" class="com.kt.cn.v2.day01.processor.factory.MyBeanFactoryPostProcessorOne"/>-->
+<!--	&lt;!&ndash; 注册第二个工厂后置处理器&ndash;&gt;-->
+<!--	<bean id="myBeanFactoryPostProcessorTwo" class="com.kt.cn.v2.day01.processor.factory.MyBeanFactoryPostProcessorTwo"/>-->
+<!--	&lt;!&ndash; =================beanFactoryPostProcessor配置end=======&ndash;&gt;-->
+</beans>

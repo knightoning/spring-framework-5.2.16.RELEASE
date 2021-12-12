@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ============================实例化bean的方式Begin====================-->
+	<!--默认构造实例化-->
+	<bean id="dog1" class="com.kt.cn.v2.day01.Dog"/>
+
+	<!--有参数构造器实例化-->
+	<bean id="dog2" class="com.kt.cn.v2.day01.Dog">
+		<constructor-arg index="0" value="dog2"/>
+		<constructor-arg index="1" value="15"/>
+	</bean>
+
+	<!--静态工厂方法实例化-->
+    <bean id="dog3" class="com.kt.cn.v2.day01.DogStaticFactory" factory-method="newInstance">
+		<constructor-arg index="0" value="dog3"/>
+		<constructor-arg index="1" value="3"/>
+	</bean>
+
+	<!--工厂方法实例化-->
+	<bean id="dogFactory" class="com.kt.cn.v2.day01.DogFactory"/>
+	<!-- 不能指定class属性，此时必须使用factory-bean属性来指定工厂Bean,factory-method属性指定实例化Bean的方法-->
+	<bean id="dog4" factory-bean="dogFactory" factory-method="newInstance">
+		<constructor-arg index="0" value="dog4"/>
+		<constructor-arg index="1" value="4"/>
+	</bean>
+
+	<bean id="outer" class="com.kt.cn.v2.day01.inner.Outer">
+		<property name="name" value="我是一个外部bean"/>
+		<property name="age" value="30"/>
+		<property name="inner">
+			<bean class="com.kt.cn.v2.day01.inner.Inner">
+				<property name="name" value="我是一个内部bean"/>
+				<property name="age" value="10"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="father" class="com.kt.cn.v2.day01.parent.Father" abstract="true">
+		<property name="name" value="father name"/>
+	</bean>
+	<bean id="sun" class="com.kt.cn.v2.day01.parent.Sun" parent="father">
+		<property name="name" value=" sun name"/>
+		<property name="age" value="18"/>
+	</bean>
+
+	<!--集合属性注入-->
+	<bean id="cat" class="com.kt.cn.v2.day01.collection.Cat">
+		<!--注入List集合-->
+		<property name="listNames">
+			<list value-type="java.lang.String" merge="false">
+				<value>张三</value>
+				<value>李四</value>
+				<value>王五</value>
+			</list>
+		</property>
+
+		<!--注入Set集合-->
+		<property name="setNames">
+			<set value-type="java.lang.String" merge="true">
+				<value>张三</value>
+				<value>李四</value>
+				<value>王五</value>
+			</set>
+		</property>
+
+		<!--注入Map集合-->
+		<property name="mapNames">
+				<map key-type="java.lang.String" value-type="java.lang.String">
+					<entry key="name" value="小明"/>
+					<entry key="age" value="3"/>
+				</map>
+		</property>
+
+		<!--注入数组集合-->
+		<property name="arrayNames">
+			<array value-type="java.lang.String">
+				<value>张三</value>
+				<value>李四</value>
+				<value>王五</value>
+			</array>
+		</property>
+
+		<!--注入properties集合-->
+		<property name="propertiesNames">
+			<props value-type="java.lang.String">
+				<prop key="name">小明</prop>
+				<prop key="age">30</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- =================lookup-method属性注入=============== -->
+	<bean id="car" class="com.kt.cn.v2.day01.method.lookupMethod.Car">
+		<!--注意:下面这句配置和lookup-method注入没关系，我们只是为了出于演示和说明配置该bean-->
+		<property name="taxi" ref="taxi"/>
+		<!--lookup-method注入-->
+		<lookup-method name="createTaxi" bean="taxi"/>
+	</bean>
+	<bean id="taxi" class="com.kt.cn.v2.day01.method.lookupMethod.Taxi" scope="prototype"/>
+
+	<!-- ==================replace-method属性注入 ===============-->
+	<bean id="dogReplaceMethod" class="com.kt.cn.v2.day01.method.replaceMethod.ReplaceDog"/>
+	<bean id="originalDogReplaceMethod" class="com.kt.cn.v2.day01.method.replaceMethod.OriginalDog">
+		<replaced-method name="sayHello" replacer="dogReplaceMethod">
+			<arg-type match="java.lang.String"></arg-type>
+		</replaced-method>
+	</bean>
+
+	<bean id="student" class="com.kt.cn.v2.day01.factoryBean.StudentFactoryBean" p:studentInfo="张三,25,三年二班"/>
+	<bean id="furniture" class="com.kt.cn.v2.day01.factoryBean.FurnitureFactoryBean" p:furniture="desk"/>
+
+	<!-- ===================生命周期================= -->
+	<!-- 注意：这里配置的name是张三，age是25，我们会通过beanPostProcessor来修改name和age -->
+	<bean id="myLifeCycleBean" class="com.kt.cn.v2.day01.lifecycle.LifeCycleBean" destroy-method="myDestroy"
+		  init-method="myInit">
+		<property name="name" value="张三"/>
+		<property name="age" value="25"/>
+	</bean>
+	<bean id="myBeanPostProcessor" class="com.kt.cn.v2.day01.lifecycle.LifeCycleBeanPostProcessor"/>
+</beans>
