@@ -15,6 +15,10 @@ import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+
+import java.io.IOException;
 
 /**
  * @author hujie
@@ -155,5 +159,46 @@ public class MyTest {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("v2/day02.xml");
 		Dog dog = applicationContext.getBean("dog",Dog.class);
 		dog.sayHello();
+	}
+
+	@Test
+	public void test15(){
+		//从资源文件夹加载
+		Resource resource = new ClassPathResource("v2/day01.xml");
+		print(resource);
+	}
+
+	@Test
+	public void test16(){
+		//使用类信息加载
+		Resource resource = new ClassPathResource("day01.xml",MyTest.class);
+		print(resource);
+	}
+
+	@Test
+	public void test17(){
+		//使用类加载器从资源文件夹下加载
+		Resource resource = new ClassPathResource("v2/day01.xml",MyTest.class.getClassLoader());
+		print(resource);
+	}
+
+	@Test
+	public void test18(){
+		//使用DefaultResourceLoader加载
+		Resource resource = new DefaultResourceLoader().getResource("v2/day01.xml");
+		print(resource);
+	}
+	/**
+	 * 打印资源文件内容
+	 * @param resource
+	 */
+	private void print(Resource resource){
+		byte[] read = new byte[10000];
+		try {
+			resource.getInputStream().read(read,0,read.length);
+			System.out.println(new String(read));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
