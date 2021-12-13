@@ -54,6 +54,9 @@ import org.springframework.core.io.Resource;
 @SuppressWarnings({"serial", "all"})
 public class XmlBeanFactory extends DefaultListableBeanFactory {
 
+	/**
+	 * 实例化xmlBeanDefinitonReader对象
+	 */
 	private final XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this);
 
 
@@ -62,6 +65,8 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 	 * which must be parsable using DOM.
 	 * @param resource the XML resource to load bean definitions from
 	 * @throws BeansException in case of loading or parsing errors
+	 *
+	 * 通过指定Resource对象创建xmlBeanFactory实例
 	 */
 	public XmlBeanFactory(Resource resource) throws BeansException {
 		this(resource, null);
@@ -73,9 +78,13 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 	 * @param resource the XML resource to load bean definitions from
 	 * @param parentBeanFactory parent bean factory
 	 * @throws BeansException in case of loading or parsing errors
+	 *
+	 * 通过指定Resource对象和父BeanFactory创建XmlBeanFactory实例
 	 */
 	public XmlBeanFactory(Resource resource, BeanFactory parentBeanFactory) throws BeansException {
+		//依次向上实例化父类构造器
 		super(parentBeanFactory);
+		//解析xml配置文件，将其转化为Ioc容器的内部表示
 		this.reader.loadBeanDefinitions(resource);
 	}
 
