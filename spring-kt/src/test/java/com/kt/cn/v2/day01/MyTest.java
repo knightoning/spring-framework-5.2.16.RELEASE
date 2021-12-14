@@ -17,8 +17,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author hujie
@@ -199,6 +205,30 @@ public class MyTest {
 			System.out.println(new String(read));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void test19() throws IOException, ParserConfigurationException, SAXException {
+		//解析xml文件
+		//1、获取InputStream输入法
+		InputStream inputStream = new ClassPathResource("v2/day01.xml").getInputStream();
+		//2、获取DocumentBuilderFactory实例
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		//3、获取DocumentBuilder实例
+		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+		//4、将documentBuilder转换为Document
+		Document document = documentBuilder.parse(inputStream);
+		//5、获取节点并循环输出节点
+		Element element = document.getDocumentElement();
+		NodeList childNodes = element.getChildNodes();
+		for (int i=0; i < childNodes.getLength(); i++){
+			Node node = childNodes.item(i);
+			NamedNodeMap attributes = node.getAttributes();
+			if(attributes != null){
+				System.out.println(attributes.getNamedItem("id"));
+				System.out.println(attributes.getNamedItem("class"));
+			}
 		}
 	}
 }
