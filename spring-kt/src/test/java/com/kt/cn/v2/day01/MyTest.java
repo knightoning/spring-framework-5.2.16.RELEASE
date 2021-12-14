@@ -231,4 +231,16 @@ public class MyTest {
 			}
 		}
 	}
+
+	/**
+	 * 从缓存中获取单例bean
+	 */
+	@Test
+	public void test20(){
+		//1、创建新的Dog实例
+		Dog dog = xmlBeanFactory.getBean("dog1",Dog.class);
+		//2、从缓存中获取Dog实例
+		dog = xmlBeanFactory.getBean("dog1",Dog.class);
+		dog.sayHello();
+	}
 }

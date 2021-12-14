@@ -929,8 +929,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		Assert.hasText(beanName, "Bean name must not be empty");
 		Assert.notNull(beanDefinition, "BeanDefinition must not be null");
 
+		//1、如果beanDefinition是AbstractBeanDefinition实例，则验证
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
+				//验证不能将静态工厂方法与方法重写相结合（静态工厂方法必须创建实例）
 				((AbstractBeanDefinition) beanDefinition).validate();
 			}
 			catch (BeanDefinitionValidationException ex) {
@@ -939,11 +941,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 		}
 
+		//2、优先尝试从缓存中加载BeanDefintion
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
 		if (existingDefinition != null) {
+			// beanName已经存在且不允许被覆盖抛出异常
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
 			}
+			//使用新的BeanDefinition覆盖已经加载的BeanDefinition,if else中只有日志打印，无实质代码，删除为了阅读方便
 			else if (existingDefinition.getRole() < beanDefinition.getRole()) {
 				// e.g. was ROLE_APPLICATION, now overriding with ROLE_SUPPORT or ROLE_INFRASTRUCTURE
 				if (logger.isInfoEnabled()) {
@@ -968,14 +973,19 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
+		//3、缓存中无对应的BeanDefinition，则直接注册
 		else {
+			// 如果beanDefinition已经被标记为创建(为了解决单例bean的循环依赖问题)
 			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				synchronized (this.beanDefinitionMap) {
+					// 加入beanDefinitionMap
 					this.beanDefinitionMap.put(beanName, beanDefinition);
+					// 创建List<String>并将缓存的beanDefinitionNames和新解析的beanName加入集合
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);
 					updatedDefinitions.add(beanName);
+					// 将updatedDefinitions赋值给beanDefinitionNames
 					this.beanDefinitionNames = updatedDefinitions;
 					removeManualSingletonName(beanName);
 				}

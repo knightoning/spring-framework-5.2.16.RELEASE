@@ -169,6 +169,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 返回在给定名称下注册的(原始)单例对象。
+	 * 检查已经实例化的单例，并允许对当前创建的单例的早期引用(解决循环引用)。
 	 * Return the (raw) singleton object registered under the given name.
 	 * <p>Checks already instantiated singletons and also allows for an early
 	 * reference to a currently created singleton (resolving a circular reference).
@@ -179,20 +181,28 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 		// Quick check for existing instance without full singleton lock
+		// 1、从缓存中获取bean
 		Object singletonObject = this.singletonObjects.get(beanName);
+		// 2、未能获取到bean,但是允许对当前创建的单例的早期引用(解决循环引用)
+		// isSingletonCurrentlyInCreation-->判断指定的单例bean是否当前正在创建(Spring只解决单例bean的循环依赖问题)
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			singletonObject = this.earlySingletonObjects.get(beanName);
 			if (singletonObject == null && allowEarlyReference) {
 				synchronized (this.singletonObjects) {
 					// Consistent creation of early reference within full singleton lock
+					// 从earlySingletonObjects获取提前曝光的bean
 					singletonObject = this.singletonObjects.get(beanName);
 					if (singletonObject == null) {
 						singletonObject = this.earlySingletonObjects.get(beanName);
 						if (singletonObject == null) {
+							// 从缓存中获取BeanFactory
 							ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 							if (singletonFactory != null) {
+								// 通过getObject()方法获取bean,注意:通过此方法获取的bean不是被缓存的
 								singletonObject = singletonFactory.getObject();
+								// 将获取到的singletonObject缓存至earlySingletonObjects
 								this.earlySingletonObjects.put(beanName, singletonObject);
+								// 从singletonFactories移除bean
 								this.singletonFactories.remove(beanName);
 							}
 						}
