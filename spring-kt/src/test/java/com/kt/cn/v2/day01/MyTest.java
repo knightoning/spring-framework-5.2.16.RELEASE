@@ -208,9 +208,16 @@ public class MyTest {
 		}
 	}
 
+	/**
+	 * 解析xml文件
+	 *
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 */
 	@Test
 	public void test19() throws IOException, ParserConfigurationException, SAXException {
-		//解析xml文件
+
 		//1、获取InputStream输入法
 		InputStream inputStream = new ClassPathResource("v2/day01.xml").getInputStream();
 		//2、获取DocumentBuilderFactory实例
