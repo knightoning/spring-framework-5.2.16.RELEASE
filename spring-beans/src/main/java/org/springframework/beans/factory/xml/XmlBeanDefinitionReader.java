@@ -250,6 +250,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	}
 
 	/**
+	 * 如果SAX应用程序需要实现自定义处理外部实体，则必须实现次接口并使用setEntityResolver方法向
+	 * SAX驱动器注册一个实例
 	 * Set a SAX entity resolver to be used for parsing.
 	 * <p>By default, {@link ResourceEntityResolver} will be used. Can be overridden
 	 * for custom entity resolution, for example relative to some specific base path.
