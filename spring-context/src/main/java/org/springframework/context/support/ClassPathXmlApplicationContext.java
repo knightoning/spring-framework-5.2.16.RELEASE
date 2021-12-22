@@ -76,6 +76,10 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
+	 * 创建一个新的ClassPathXmlApplicationContext容器
+	 * 从指定的xml文件加载BeanDefinition并自动刷新容器
+	 * @param configLocation 配置文件位置
+	 * @throws BeansException 容器创建失败，抛出BeansException异常
 	 * Create a new ClassPathXmlApplicationContext, loading the definitions
 	 * from the given XML file and automatically refreshing the context.
 	 * @param configLocation resource location
@@ -138,9 +142,12 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
 			throws BeansException {
 
+		//调用父类构造器
 		super(parent);
+		//设定配置文件路径
 		setConfigLocations(configLocations);
 		if (refresh) {
+			//扩展功能
 			refresh();
 		}
 	}
