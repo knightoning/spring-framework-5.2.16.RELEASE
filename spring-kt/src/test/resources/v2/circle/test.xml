@@ -4,14 +4,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="testA" class="com.kt.cn.v2.day01.circle.TestA">
-        <constructor-arg index="0" ref="testB"/>
+        <!--<constructor-arg index="0" ref="testB"/>-->
+        <property name="testB" ref="testB"/>
     </bean>
 
     <bean id="testB" class="com.kt.cn.v2.day01.circle.TestB">
-        <constructor-arg index="0" ref="testC"/>
-    </bean>
+        <!-- <constructor-arg index="0" ref="testC"/>-->
+        <property name="testA" ref="testA"/>
+     </bean>
 
-    <bean id="testC" class="com.kt.cn.v2.day01.circle.TestC">
-        <constructor-arg index="0" ref="testA"/>
-    </bean>
-</beans>
+<!--     <bean id="testC" class="com.kt.cn.v2.day01.circle.TestC">-->
+<!--         &lt;!&ndash;<constructor-arg index="0" ref="testA"/>&ndash;&gt;-->
+<!--         <property name="testA" ref="testA"/>-->
+<!--     </bean>-->
+ </beans>

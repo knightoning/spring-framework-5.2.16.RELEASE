@@ -8,10 +8,6 @@ public class TestC {
         this.testA = testA;
     }
 
-    public void c(){
-        testA.a();
-    }
-
     public TestA getTestA() {
         return testA;
     }

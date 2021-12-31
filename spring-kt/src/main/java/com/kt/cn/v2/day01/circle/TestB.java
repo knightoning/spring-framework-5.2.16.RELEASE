@@ -2,21 +2,17 @@ package com.kt.cn.v2.day01.circle;
 
 public class TestB {
 
-    private TestC testC;
+    private TestA testA;
 
-    public TestB(TestC testC) {
-        this.testC = testC;
+    public TestB() {
+
     }
 
-    public void b(){
-        testC.c();
+    public TestA getTestA() {
+        return testA;
     }
 
-    public TestC getTestC() {
-        return testC;
-    }
-
-    public void setTestC(TestC testC) {
-        this.testC = testC;
+    public void setTestA(TestA testA) {
+        this.testA = testA;
     }
 }
