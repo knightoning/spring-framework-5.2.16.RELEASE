@@ -23,7 +23,7 @@ public class MyCircleTest {
      * circular reference?
      * @throws Throwable
      */
-    @Test(expected = BeanCurrentlyInCreationException.class)
+    @Test
     public void testCircleByConstructor() throws Throwable {
 
         try {
