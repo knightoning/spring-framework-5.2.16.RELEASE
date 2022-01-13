@@ -1,9 +1,8 @@
 package com.kt.cn.v2.day01.proxy.cglib;
 
-import org.springframework.cglib.proxy.Enhancer;
-import org.springframework.cglib.proxy.MethodInterceptor;
-import org.springframework.cglib.proxy.MethodProxy;
-
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 import java.lang.reflect.Method;
 
 
@@ -11,11 +10,20 @@ public class MyCglibProxy implements MethodInterceptor {
 
    private Enhancer enhancer = new Enhancer();
 
+//
+//    public Object getInstance(Class clazz){
+//        enhancer.setSuperclass(clazz);
+//        enhancer.setCallback(this);
+//
+//        return enhancer.create();
+//    }
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+
+//        System.out.println("==代理方法开始执行");
+//        Object result = methodProxy.invokeSuper(o,objects);
+//        System.out.println("==代理方法开始结束");
+//        return result;
         return null;
     }
-
-    // 这里的目标类型为Object，则可以接受任意一种参数作为被代理类，实现了动态代理
-
 }

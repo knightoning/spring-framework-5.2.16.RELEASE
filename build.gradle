@@ -269,6 +269,8 @@ configure(allprojects) { project ->
 			dependency "org.glassfish:javax.el:3.0.1-b08"
 			dependency "org.glassfish.main:javax.jws:4.0-b33"
 			dependency "org.glassfish.tyrus:tyrus-container-servlet:1.13.1"
+			dependency "asm:asm:3.3.1"
+			dependency "cglib:cglib:2.2.2"
 		}
 		generatedPomCustomization {
 			enabled = false
