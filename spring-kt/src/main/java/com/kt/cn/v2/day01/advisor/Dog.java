@@ -10,9 +10,7 @@ public class Dog implements Animal{
         System.out.println("==名字：" + name + " 年龄：" +age);
     }
 
-    @Override
-    public void sayException(String name, int age) {
-        System.out.println("==名字：" + name + " 年龄：" +age);
-       // System.out.println("==抛出异常：" + 1 / 0);
+    public void sayHelloDog(){
+        System.out.println("我是一只狗...");
     }
 }

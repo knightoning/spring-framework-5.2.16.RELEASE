@@ -2,6 +2,7 @@ package com.kt.cn.v2.day01.advice;
 
 import com.kt.cn.v2.day01.advisor.*;
 import org.junit.Test;
+import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.aop.framework.ProxyFactory;
 
 public class MyAdivceTest {
@@ -57,5 +58,27 @@ public class MyAdivceTest {
         //3、生成代理实例
         Animal proxyDog = (Animal) proxyFactory.getProxy();
         proxyDog.sayHello("二哈",3);
+    }
+
+    @Test
+    public void test4(){
+
+        //1、创建目标类、增强、切入点
+        Animal animal = new Dog();
+        MyMethodBeforeAdvice advice = new MyMethodBeforeAdvice();
+        MyStaticPointcutAdvisor advisor = new MyStaticPointcutAdvisor();
+
+        //2、创建ProxyFactory并设置目标类、增强、切面
+        ProxyFactory proxyFactory = new ProxyFactory();
+        proxyFactory.setTarget(animal);
+        // 为切面提供增强
+        advisor.setAdvice(advice);
+        proxyFactory.addAdvisor(advisor);
+
+        //3、生成代理实例
+        Dog proxyDog =(Dog) proxyFactory.getProxy();
+        proxyDog.sayHelloDog();
+        System.out.println("\n\n");
+        proxyDog.sayHello("dog",13);
     }
 }
