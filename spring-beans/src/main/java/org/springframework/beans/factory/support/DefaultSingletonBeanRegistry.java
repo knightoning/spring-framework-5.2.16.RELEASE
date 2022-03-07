@@ -77,7 +77,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/**
 	 *
 	 * 一级缓存
-	 * 用于保存BeanName和创建bean实例之间的关系
+	 * 用于保存BeanName和创建bean实例之间的关系 key-->beanName,value-->beanInstance
 	 *
 	 *Cache of singleton objects: bean name to bean instance. */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
@@ -85,7 +85,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/**
 	 *
 	 * 三级缓存
-	 * 用于保存BeanName和创建bean工厂之间的关系
+	 * 用于保存BeanName和创建bean工厂之间的关系 key-->beanName,value-->beanFactory
 	 *
 	 *Cache of singleton factories: bean name to ObjectFactory. */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
@@ -95,11 +95,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * 二级缓存
 	 * 保存beanNam和创建bean实例之间的关系，与singletonFactories的不同之处在于，当一个单例bean被放到这里后，那么当bean
 	 * 还在创建过程中就可以通过getBean方法获取到，可以方便进行循环依赖的检查
+	 * key-->beanName,value-->beanInstance
+	 * 该缓存主要为了解决bean的循环依赖引用
 	 *
 	 * Cache of early singleton objects: bean name to bean instance. */
 	private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>(16);
 
-	/** Set of registered singletons, containing the bean names in registration order. */
+	/** Set of registered singletons, containing the bean names in registration order.
+	 *  缓存所有注册的单例beanName
+	 * */
 	private final Set<String> registeredSingletons = new LinkedHashSet<>(256);
 
 	/** Names of beans that are currently in creation. */
