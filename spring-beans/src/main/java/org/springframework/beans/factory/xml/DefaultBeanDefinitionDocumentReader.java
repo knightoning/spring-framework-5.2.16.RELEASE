@@ -182,6 +182,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 					Element ele = (Element) node;
 					// 默认命名空间
 					if (delegate.isDefaultNamespace(ele)) {
+
 						parseDefaultElement(ele, delegate);
 					}
 					// 自定义命名空间
